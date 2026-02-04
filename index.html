@@ -185,6 +185,21 @@
             font-size: 14px;
         }
 
+        .click-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #444;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .reading-screen {
+            cursor: pointer;
+        }
+
         .file-upload {
             margin: 20px 0;
             padding: 20px;
@@ -285,15 +300,10 @@
         </div>
 
         <!-- Reading Screen -->
-        <div class="reading-screen" id="readingScreen">
+        <div class="reading-screen" id="readingScreen" onclick="stopReading()">
             <div style="width: 100%;">
                 <div class="word-display" id="wordDisplay"></div>
-                <div class="progress" id="progress"></div>
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="stopReading()">
-                        Stop Reading
-                    </button>
-                </div>
+                <div class="click-hint">click anywhere to end</div>
             </div>
         </div>
     </div>
@@ -388,10 +398,9 @@ RSVP, or Rapid Serial Visual Presentation, is a technique where words are displa
             `;
         }
 
-        // Update progress
+        // Update progress (disabled - keeping function for compatibility)
         function updateProgress() {
-            const progress = document.getElementById('progress');
-            progress.textContent = `Word ${currentIndex + 1} / ${currentWords.length}`;
+            // No longer displaying progress during reading
         }
 
         // Display next word
