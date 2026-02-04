@@ -1,0 +1,7 @@
+# Phase 1: Basic RSVP CLI
+# No dependencies needed for text file reading
+
+# Phase 2: OCR support (commented out for now)
+# Pillow>=10.0.0
+# pytesseract>=0.3.10
+# opencv-python>=4.8.0
