@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP Speed Reader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #1e1e1e;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid #333;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .setup-screen {
+            display: block;
+        }
+
+        .reading-screen {
+            display: none;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .input-section {
+            margin: 30px 0;
+        }
+
+        .input-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #ccc;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            font-size: 16px;
+            background: #2d2d2d;
+            color: #ffffff;
+            border: 2px solid #444;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #007acc;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background: #2d2d2d;
+            color: #ffffff;
+            border: 2px solid #444;
+            border-radius: 8px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #007acc;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: #007acc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #005a9e;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #d13438;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #a02629;
+        }
+
+        .word-display {
+            font-size: 72px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .word-display .before {
+            color: #ffffff;
+        }
+
+        .word-display .orp {
+            color: #ff4444;
+        }
+
+        .word-display .after {
+            color: #ffffff;
+        }
+
+        .progress {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-upload {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #444;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload label {
+            cursor: pointer;
+            color: #007acc;
+            text-decoration: underline;
+        }
+
+        .quick-examples {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        .quick-examples h3 {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+        .quick-examples button {
+            margin: 5px;
+            padding: 8px 16px;
+            background: #3a3a3a;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .quick-examples button:hover {
+            background: #4a4a4a;
+        }
+
+        @media (max-width: 768px) {
+            .word-display {
+                font-size: 48px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 RSVP Speed Reader</h1>
+            <p>Read faster with Rapid Serial Visual Presentation</p>
+        </header>
+
+        <!-- Setup Screen -->
+        <div class="setup-screen" id="setupScreen">
+            <div class="input-section">
+                <label for="textInput">Paste your text here:</label>
+                <textarea 
+                    id="textInput" 
+                    placeholder="Paste any text you want to speed read... Try copying an article, book excerpt, or any text content."
+                ></textarea>
+            </div>
+
+            <div class="file-upload">
+                <p>Or upload a text file:</p>
+                <input type="file" id="fileInput" accept=".txt" />
+                <label for="fileInput">Choose File</label>
+                <span id="fileName"></span>
+            </div>
+
+            <div class="quick-examples">
+                <h3>Quick Examples:</h3>
+                <button onclick="loadSampleText()">Load Sample Text</button>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="wpmInput">Reading Speed (WPM):</label>
+                    <input type="number" id="wpmInput" value="300" min="50" max="1500" step="50">
+                </div>
+                <button class="btn btn-primary" id="startBtn" onclick="startReading()">
+                    Start Reading
+                </button>
+            </div>
+        </div>
+
+        <!-- Reading Screen -->
+        <div class="reading-screen" id="readingScreen">
+            <div style="width: 100%;">
+                <div class="word-display" id="wordDisplay"></div>
+                <div class="progress" id="progress"></div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="stopReading()">
+                        Stop Reading
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // RSVP Engine
+        class RSVPEngine {
+            constructor(wpm = 300) {
+                this.wpm = wpm;
+            }
+
+            calculateORP(word) {
+                const length = word.length;
+                if (length <= 1) return 0;
+                if (length <= 5) return 1;
+                if (length <= 9) return 2;
+                if (length <= 13) return 3;
+                return 4;
+            }
+
+            calculateDuration(word) {
+                let baseDuration = 60000.0 / this.wpm;
+
+                // Adjust for punctuation
+                const lastChar = word[word.length - 1];
+                if ('.!?'.includes(lastChar)) {
+                    baseDuration *= 2.0;
+                } else if (',;:'.includes(lastChar)) {
+                    baseDuration *= 1.5;
+                }
+
+                // Adjust for word length
+                if (word.length > 8) {
+                    baseDuration *= 1.3;
+                } else if (word.length < 3) {
+                    baseDuration *= 0.8;
+                }
+
+                return baseDuration;
+            }
+
+            splitWordAtORP(word) {
+                const orp = this.calculateORP(word);
+                return {
+                    before: word.substring(0, orp),
+                    focus: word[orp] || '',
+                    after: word.substring(orp + 1)
+                };
+            }
+        }
+
+        // Global state
+        let currentWords = [];
+        let currentIndex = 0;
+        let isReading = false;
+        let timeoutId = null;
+        let engine = null;
+
+        // Load sample text
+        function loadSampleText() {
+            const sample = `Speed reading is a collection of techniques that aim to increase reading speed without an unacceptable reduction in comprehension or retention. The most effective methods involve reducing subvocalization, expanding peripheral vision, and using rapid serial visual presentation.
+
+RSVP, or Rapid Serial Visual Presentation, is a technique where words are displayed one at a time in the same position on a screen. This eliminates the need for eye movements, which can significantly slow down reading.`;
+            
+            document.getElementById('textInput').value = sample;
+        }
+
+        // File upload handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('textInput').value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Prepare words from text
+        function prepareWords(text) {
+            return text.split(/\s+/).filter(w => w.trim().length > 0);
+        }
+
+        // Display word with ORP
+        function displayWord(word) {
+            const parts = engine.splitWordAtORP(word);
+            const display = document.getElementById('wordDisplay');
+            display.innerHTML = `
+                <span class="before">${parts.before}</span><span class="orp">${parts.focus}</span><span class="after">${parts.after}</span>
+            `;
+        }
+
+        // Update progress
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            progress.textContent = `Word ${currentIndex + 1} / ${currentWords.length}`;
+        }
+
+        // Display next word
+        function displayNextWord() {
+            if (!isReading || currentIndex >= currentWords.length) {
+                finishReading();
+                return;
+            }
+
+            const word = currentWords[currentIndex];
+            displayWord(word);
+            updateProgress();
+
+            const duration = engine.calculateDuration(word);
+            currentIndex++;
+
+            timeoutId = setTimeout(displayNextWord, duration);
+        }
+
+        // Start reading
+        function startReading() {
+            const text = document.getElementById('textInput').value.trim();
+            const wpm = parseInt(document.getElementById('wpmInput').value);
+
+            if (!text) {
+                alert('Please enter some text to read!');
+                return;
+            }
+
+            if (wpm < 50 || wpm > 1500) {
+                alert('Please enter a WPM between 50 and 1500');
+                return;
+            }
+
+            // Prepare
+            currentWords = prepareWords(text);
+            currentIndex = 0;
+            isReading = true;
+            engine = new RSVPEngine(wpm);
+
+            // Switch screens
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('readingScreen').style.display = 'flex';
+
+            // Start displaying
+            displayNextWord();
+        }
+
+        // Stop reading
+        function stopReading() {
+            isReading = false;
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+            resetToSetup();
+        }
+
+        // Finish reading
+        function finishReading() {
+            isReading = false;
+            const display = document.getElementById('wordDisplay');
+            display.innerHTML = '✓ Complete!';
+            document.getElementById('progress').textContent = '';
+            
+            setTimeout(() => {
+                resetToSetup();
+            }, 2000);
+        }
+
+        // Reset to setup screen
+        function resetToSetup() {
+            document.getElementById('setupScreen').style.display = 'block';
+            document.getElementById('readingScreen').style.display = 'none';
+            document.getElementById('wordDisplay').innerHTML = '';
+            document.getElementById('progress').textContent = '';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Escape to stop
+            if (e.key === 'Escape' && isReading) {
+                stopReading();
+            }
+            // Enter to start (when textarea not focused)
+            if (e.key === 'Enter' && !isReading && document.activeElement.tagName !== 'TEXTAREA') {
+                startReading();
+            }
+        });
+    </script>
+</body>
+</html>
