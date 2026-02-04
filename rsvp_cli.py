@@ -110,22 +110,12 @@ def display_rsvp(words, wpm=300):
             # Clear screen completely
             clear_screen()
             
-            # Add vertical padding
-            print("\n" * 8)
+            # Add vertical padding to center word on screen
+            print("\n" * 12)
             
-            # Display header
-            print("=" * 80)
-            print(f"RSVP Reader - {wpm} WPM - Press Ctrl+C to stop".center(80))
-            print("=" * 80)
-            print("\n" * 2)
-            
-            # Display formatted word (centered and ORP-aligned)
+            # Display only the formatted word (centered and ORP-aligned)
             formatted = engine.format_word_orp(word)
             print(formatted.center(80))
-            
-            # Display progress
-            print(f"\nWord {i+1}/{len(words)}".center(80))
-            print()
             
             # Wait for calculated duration
             duration = engine.calculate_duration(word)
