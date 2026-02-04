@@ -165,24 +165,36 @@
         .word-display {
             font-size: 72px;
             font-weight: bold;
-            text-align: center;
+            font-family: 'Courier New', monospace;
             min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             user-select: none;
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+
+        .word-display span {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
         }
 
         .word-display .before {
             color: #ffffff;
+            right: calc(50% + 0.3em);
+            text-align: right;
         }
 
         .word-display .orp {
             color: #ff4444;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .word-display .after {
             color: #ffffff;
+            left: calc(50% + 0.3em);
         }
 
         .progress {
