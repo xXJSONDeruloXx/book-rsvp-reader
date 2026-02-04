@@ -15,7 +15,7 @@ Speed reading technique that displays one word at a time in a fixed position, al
 - Timing adjusts for word length and punctuation
 - Black background, white text, large font
 
-## Tech Stack (Recommended)
+## Tech Stack Maybe
 
 ### Flutter + Google ML Kit
 
