@@ -33,6 +33,10 @@
             border-bottom: 2px solid #333;
         }
 
+        body.reading header {
+            display: none;
+        }
+
         header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
@@ -49,10 +53,13 @@
 
         .reading-screen {
             display: none;
-            flex: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             justify-content: center;
             align-items: center;
-            min-height: 80vh;
         }
 
         .input-section {
@@ -186,14 +193,7 @@
         }
 
         .click-hint {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #444;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            display: none;
         }
 
         .reading-screen {
@@ -301,10 +301,7 @@
 
         <!-- Reading Screen -->
         <div class="reading-screen" id="readingScreen" onclick="stopReading()">
-            <div style="width: 100%;">
-                <div class="word-display" id="wordDisplay"></div>
-                <div class="click-hint">click anywhere to end</div>
-            </div>
+            <div class="word-display" id="wordDisplay"></div>
         </div>
     </div>
 
@@ -444,6 +441,7 @@ RSVP, or Rapid Serial Visual Presentation, is a technique where words are displa
             // Switch screens
             document.getElementById('setupScreen').style.display = 'none';
             document.getElementById('readingScreen').style.display = 'flex';
+            document.body.classList.add('reading');
 
             // Start displaying
             displayNextWord();
@@ -477,6 +475,7 @@ RSVP, or Rapid Serial Visual Presentation, is a technique where words are displa
             document.getElementById('readingScreen').style.display = 'none';
             document.getElementById('wordDisplay').innerHTML = '';
             document.getElementById('progress').textContent = '';
+            document.body.classList.remove('reading');
         }
 
         // Keyboard shortcuts
