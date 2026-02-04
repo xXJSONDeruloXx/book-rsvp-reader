@@ -1,13 +1,10 @@
 # Book RSVP Speed Reader
 
-Mobile app for speed-reading physical books using camera OCR and RSVP (Rapid Serial Visual Presentation) technology.
+for speed-reading physical books using camera OCR and RSVP (Rapid Serial Visual Presentation) technology.
 
-## Concept
+currently a little POC webapp that accepts txt files or pasted in text
 
-1. **Capture** - Point camera at book page, tap to capture
-2. **Process** - OCR extracts text from image
-3. **Read** - Display text one word at a time using RSVP technique
-4. **Repeat** - Move to next page when done
+play with it at: https://xxjsonderuloxx.github.io/book-rsvp-reader/
 
 ## RSVP (Rapid Serial Visual Presentation)
 
@@ -32,57 +29,3 @@ Speed reading technique that displays one word at a time in a fixed position, al
 - `google_mlkit_text_recognition` - OCR
 - `camera` - Image capture
 - Custom RSVP engine (~100 lines)
-
-## Project Status
-
-**Current:** Research & planning phase
-
-**Next Steps:**
-1. Set up Flutter project
-2. Implement camera capture
-3. Integrate OCR
-4. Build RSVP display engine
-5. Wire together full flow
-
-## MVP Features
-
-- ✅ Camera capture
-- ✅ OCR text extraction
-- ✅ Basic RSVP display (fixed 200 WPM)
-- ✅ Progress indicator
-- ✅ Pause/resume
-- ✅ "Next page" prompt
-
-## Future Enhancements
-
-- Variable speed control (150-500+ WPM)
-- Skip forward/backward by sentence
-- Session bookmarking
-- Reading statistics
-- Multi-language support
-- PDF import (skip camera)
-- Dark/light theme toggle
-
-## Development Timeline
-
-**MVP:** 2-3 full days (~15-22 hours)
-- Camera + OCR: 6-10 hours
-- RSVP engine: 4-6 hours
-- UI polish: 4-6 hours
-
-## Documentation
-
-See `docs/RESEARCH.md` for:
-- Full technical analysis
-- RSVP algorithm details
-- OCR library comparison
-- Implementation guide
-- Open source references
-
-## License
-
-TBD
-
-## Author
-
-Kurt (@xXJSONDeruloXx)
